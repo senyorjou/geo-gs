@@ -1,12 +1,37 @@
 from collections import defaultdict
 
 from flask import jsonify, request
-from index import app, db
+
+from index import app, auth, db, tokens
 from models import PostalCode
 from serializers import PostalCodeSchema
 
 
+def auth_error_override():
+    """
+    Returns a custom error for unauthorized accesses.
+    """
+    response = jsonify({'genericErrors': ['Unauthorized access']})
+    response.status_code = 401
+    return response
+
+
+# Override the authentication error response
+auth.error_handler(auth_error_override)
+
+
+@auth.verify_token
+def verify_token(token):
+    """
+    Simple dead auth. Check `tokens` in index.py
+    """
+    if token in tokens:
+        return True
+    return False
+
+
 @app.route('/paystats', methods=['GET'])
+@auth.login_required
 def paystats():
     """
     Returns a payload with postal codes with paystats data by postal code.
@@ -16,13 +41,14 @@ def paystats():
         pcode = PostalCode.query.filter_by(code=code).first()
         result = PostalCodeSchema().dump(pcode)
     else:
-        pcodes = PostalCode.query.all()[:10]
+        pcodes = PostalCode.query.all()
         result = PostalCodeSchema(many=True).dump(pcodes)
 
     return jsonify(result.data)
 
 
 @app.route('/total', methods=['GET'])
+@auth.login_required
 def total():
     """
     Returns a payload with total amount.
@@ -43,6 +69,7 @@ def total():
 
 
 @app.route('/test', methods=['GET'])
+@auth.login_required
 def test():
     """
     Returns a payload with aggregated data for paystats by postal code
@@ -65,11 +92,6 @@ def test():
         else:
             out[pcode][age][gender] = float(value)
 
-    # pcodes = PostalCode.query.all()[:10]
-    # postal_codes = PostalCodeSchema(many=True).dump(pcodes)
-
-    # for item in postal_codes.data:
-    #     item.update(dict(paystats=out[item['code']]))
     return jsonify(out)
 
 

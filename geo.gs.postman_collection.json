@@ -1,0 +1,28 @@
+{
+	"variables": [],
+	"info": {
+		"name": "geo.gs",
+		"_postman_id": "3f1a0d4f-2ffe-9e1e-84a0-5959959c41b1",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://localhost:5000/paystats",
+			"request": {
+				"url": "http://localhost:5000/paystats",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token secret-token-1",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}

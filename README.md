@@ -18,7 +18,7 @@ $ docker-compose exec web python manage.py db upgrade
 Copy files into `ext-data` directory, postgis instance mounts this path on its `/var/data`
 
 ```bash
-# open a psql client from postgis instance
+# open a psql client from postgis instance, use `postgres` when asked for password
 $ docker-compose exec postgis psql -U postgres -W postgres
 
 # import Postal Codes data
@@ -37,5 +37,26 @@ Valid enpoints are:
   - To get all data for postal codes with geo info
 - /total
   - To get all aggregated amount
-- /age_gender
+- /age-gender
   - To get amount by age & gender
+- /age-gender-ts
+  - To get amount by timeseries and gender
+
+
+#### DUMP your data
+As CSV flat file
+```bash
+# open a psql client from postgis instance, use `postgres` when asked for password
+$ docker-compose exec postgis psql -U postgres -W postgres
+# export paystats table as a CSV flat file
+postgres@[local] ~>COPY paystats TO '/var/data/paystats.csv' CSV HEADER;
+
+```
+
+As a full PSQL backup, including schema and indices
+```bash
+# open a shell session
+$ docker-compose exec postgis bash
+# execute PSQL pg_dump client utility
+/usr/local# pg_dump -U postgres -W postgres > /var/data/all_data.sql
+```

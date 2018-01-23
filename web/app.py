@@ -67,7 +67,7 @@ def total():
     return jsonify(dict(total=int(result)))
 
 
-@app.route('/age_gender', methods=['GET'])
+@app.route('/age-gender', methods=['GET'])
 @auth.login_required
 def age_gender():
     """
@@ -86,6 +86,29 @@ def age_gender():
     out = defaultdict(dict)
     for age, gender, amount in db.engine.execute(sql):
         out[age][gender] = float(amount)
+
+    return jsonify(out)
+
+
+@app.route('/age-gender-ts', methods=['GET'])
+@auth.login_required
+def age_gender_ts():
+    """
+    Returns a payload with age & gender data.
+    """
+    code = request.args.get('code')
+
+    sql_where = " WHERE PC.code = '{}'".format(code) if code else ''
+    sql = """
+        SELECT p_month, p_gender, sum(amount)
+        {sql_where}
+        FROM paystats PS LEFT JOIN postal_codes PC on PS.postal_code_id = PC.id
+        GROUP BY p_month, p_gender
+    """.format(sql_where=sql_where)
+
+    out = defaultdict(dict)
+    for month, gender, amount in db.engine.execute(sql):
+        out[month.strftime('%Y-%m-%d')][gender] = float(amount)
 
     return jsonify(out)
 

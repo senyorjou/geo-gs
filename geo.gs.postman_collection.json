@@ -27,7 +27,7 @@
 		{
 			"name": "Age & Gender",
 			"request": {
-				"url": "http://localhost:5000/age_gender",
+				"url": "http://localhost:5000/age-gender",
 				"method": "GET",
 				"header": [
 					{
@@ -45,6 +45,23 @@
 			"name": "Paystats",
 			"request": {
 				"url": "http://localhost:5000/paystats",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token secret-token-1",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Age & Gender TS",
+			"request": {
+				"url": "http://localhost:5000/age-gender",
 				"method": "GET",
 				"header": [
 					{

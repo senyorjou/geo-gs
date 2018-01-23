@@ -8,7 +8,41 @@
 	},
 	"item": [
 		{
-			"name": "http://localhost:5000/paystats",
+			"name": "Total",
+			"request": {
+				"url": "http://localhost:5000/total",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token secret-token-1",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Age & Gender",
+			"request": {
+				"url": "http://localhost:5000/age_gender",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token secret-token-1",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Paystats",
 			"request": {
 				"url": "http://localhost:5000/paystats",
 				"method": "GET",

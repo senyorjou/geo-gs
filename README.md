@@ -32,3 +32,10 @@ postgres@[local] ~>COPY paystats(amount, p_month, p_age, p_gender, postal_code_i
 API endpoints are protected by a Token http header, use `Authorization Token secret-key-1` to access.
 Import `geo.gs.postman_collection.json` into postman to use prebuilt calls
 
+Valid enpoints are:
+- /paystats
+  - To get all data for postal codes with geo info
+- /total
+  - To get all aggregated amount
+- /age_gender
+  - To get amount by age & gender

@@ -1,0 +1,27 @@
+version: "3"
+services:
+  web:
+    restart: always
+    build: ./web
+    ports:
+      - 5000:5000
+    links:
+      - postgis:postgis
+    volumes:
+      - ./web:/usr/src/app
+    env_file: .env
+    command: /usr/local/bin/gunicorn -w 2 -b :5000 app:app --reload
+    # command: sleep 10000
+
+  postgis:
+    image: geographica/postgis:pleasant_yacare
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/data
+      - ./ext-data:/var/data
+    environment:
+      - POSTGRES_PASSWD=postgres
+
+volumes:
+  db-data:
